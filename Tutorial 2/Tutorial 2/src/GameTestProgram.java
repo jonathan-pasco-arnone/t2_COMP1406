@@ -1,6 +1,6 @@
 import java.awt.Color;
 public class GameTestProgram {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         Game  g;
 
         g = new Game();
@@ -24,14 +24,38 @@ public class GameTestProgram {
         g.add(new Trap(new Point2D(145, 145)));
 
         // Add some players
-        g.add(new Player("Blue Person", Color.BLUE, new Point2D(38,156), 90));
-        g.add(new Player("Yellow Person", Color.YELLOW, new Point2D(55,37), 270));
-        g.add(new Player("Green Person", Color.GREEN, new Point2D(147,116), 0));
+        // g.add(new Player("Blue Person", Color.BLUE, new Point2D(38,156), 90));
+        // g.add(new Player("Yellow Person", Color.YELLOW, new Point2D(55,37), 270));
+        // g.add(new Player("Green Person", Color.GREEN, new Point2D(147,116), 0));
 
         // Add the ball
-        g.add(new Ball(new Point2D(90, 90)));
+        // g.add(new Ball(new Point2D(90, 90)));
 
         System.out.println("Here are the Game Objects:");
         g.displayObjects();
+
+        // Test out some Player and Ball movement
+        System.out.println("------------------------------------------------");
+        Player player = new Player("Red Player", Color.RED, new Point2D(100,100),0);
+        player.speed = 10;
+        player.direction = 0;
+        g.add(player);
+        Ball ball = new Ball(new Point2D(100,100));
+        ball.speed = 10;
+        ball.direction = 0;
+        g.add(ball);
+        // Make some updates
+        for (int i=0; i<20; i++)
+            g.updateObjects();
+
+        // Get the harmful objects
+        System.out.println("\nHere are the Harmful Objects:");
+        Harmful[] dangerousStuff = g.harmfulObjects();
+        for (Harmful d: dangerousStuff)
+            System.out.println(" " + d);
+
+        // Assess the current amount of danger
+        System.out.println("\nCurrent Danger Assessment:");
+        System.out.println(g.assessDanger());
     }
 }

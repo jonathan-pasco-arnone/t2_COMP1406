@@ -1,21 +1,21 @@
 public class Game {
     public static final int     MAX_GAME_OBJECTS = 1000;
 
-    Object[]        gameObjects;
+    GameObject[]        gameObjects;
     int             objectCount;
 
     public Game() {
-        gameObjects = new Object[MAX_GAME_OBJECTS];
+        gameObjects = new GameObject[MAX_GAME_OBJECTS];
         objectCount = 0;
     }
 
-    public void add(Object obj) {
+    public void add(GameObject obj) {
         if (objectCount < MAX_GAME_OBJECTS)
             gameObjects[objectCount++] = obj;
     }
 
     // The get methods
-    public Object[] getGameObjects() { return gameObjects; }
+    public GameObject[] getGameObjects() { return gameObjects; }
     public int getObjectCount() { return objectCount; }
 
     public String toString() {
@@ -25,5 +25,35 @@ public class Game {
     public void displayObjects() {
         for (int i=0; i<objectCount; i++)
             System.out.println(gameObjects[i]);
+    }
+
+    public void updateObjects() {
+        for (int i=0; i<objectCount; i++)
+            gameObjects[i].update();
+    }
+
+    // Return an array of all Harmful objects in the game
+    public Harmful[] harmfulObjects() {
+        // First find out how many objects are Harmful
+        int count = 0;
+        for (GameObject g: gameObjects)
+            if (g instanceof Harmful)
+                count++;
+
+        // Now create the array and fill it up
+        Harmful[] bad = new Harmful[count];
+        count = 0;
+        for (GameObject g: gameObjects)
+            if (g instanceof Harmful harmful)
+                bad[count++] = harmful;
+        return bad;
+    }
+
+    public int assessDanger() {
+        int totalDmg = 0;
+        for (Harmful obj: harmfulObjects()) {
+            totalDmg += obj.getDamageAmount();
+        }
+        return totalDmg;
     }
 }
